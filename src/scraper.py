@@ -10,7 +10,7 @@ def scrape_calendar(url):
 	return table_rows
 
 
-def get_calendar_data(url):
+def format_calendar_data(url):
 
 	rows = scrape_calendar(url)
 
@@ -19,32 +19,28 @@ def get_calendar_data(url):
 	for row in rows:
 		entries = row.find_all('td')
 
-		lesson = entries[0].string
+		lesson = entries[0].string.encode('ascii', 'ignore')
 		date = str(entries[1].string.replace('<td>', ''))
 		topics = entries[2].h4
 		
 		# [:8] to remove extraneous text
 		if 'Quiz' in str(topics):
-			assignment = topics.a.text[:8]
+			activity = topics.a.text[:8]
 		elif 'Test' in str(topics):
-			assignment = topics.text[:8]
+			activity = topics.text[:8]
 		else:
-			assignment = ''
+			activity = ''
 
-		due = []
-
-		try:
-			for entry in entries[4].find_all('a'):
-				due.append(str(entry.text))
-		except AttributeError:
-			pass
+		due = (str(entry.text) for entry in entries[4].find_all('a'))
 		
 		page_data[lesson] = {
 			'date': date,
-			'in_class': assignment,
+			'activity': activity,
 			'due': due
 		}
 
-
+	
 	return page_data
+
+format_calendar_data('http://simms-teach.com/cis90calendar.php')
 
