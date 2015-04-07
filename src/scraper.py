@@ -2,17 +2,16 @@ from bs4 import BeautifulSoup
 import requests
 import time
 
+
 def scrape_calendar(url):
 	response = requests.get(url)
 	soup = BeautifulSoup(response.text)
-	# retrieve rows, ignore header row
+	# [1:] ignore header row
 	table_rows = soup.find_all('tr')[1:]
 	return table_rows
 
 
-def format_calendar_data(url):
-
-	rows = scrape_calendar(url)
+def format_calendar_data(rows):
 
 	page_data = {}	
 
@@ -38,9 +37,6 @@ def format_calendar_data(url):
 			'activity': activity,
 			'due': due
 		}
-
 	
 	return page_data
-
-format_calendar_data('http://simms-teach.com/cis90calendar.php')
 
