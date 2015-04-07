@@ -2,3 +2,4 @@ tips
 *.pyc
 __pycache__
 pyenv
+env
