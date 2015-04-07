@@ -12,7 +12,7 @@ config = {
 	'install_requires': ['nose'],
 	'packages': ['src'],
 	'scripts': [],
-	'name': 'planner'
+	'name': 'pyStudent'
 }
 
 setup(**config)
