@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 import requests
+import time
 import unittest
 
 from src.scraper import scrape_calendar, get_calendar_data
@@ -101,11 +102,18 @@ class ScrapeCalendarTest(unittest.TestCase):
 		assert check_strings['Survey'] is 1
 		assert check_strings['X1'] is 1
 		assert check_strings['X2'] is 1
-		
 			
-
-	# are the dates as expected, spring vs fall
-
+	def test_correct_dates_for_spring_and_fall(self):
+		today = time.strftime("%m/%d")
+		for value in self.calendar.values():
+			date = time.strptime(value['date'], "%m/%d")
+			date = time.strftime("%m/%d", date)
+			if today < "09/01":
+				assert date < "09/01"
+			elif today > "09/01":
+				print 'it is fall'
+				assert date > "09/01"
+	
 
 if __name__ == '__main__':
 	unittest.main()
