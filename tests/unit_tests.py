@@ -1,11 +1,12 @@
-from bs4 import BeautifulSoup
 import re
-import requests
 import time
 import unittest
 
-from src.scraper import scrape_calendar, format_calendar_data
+from bs4 import BeautifulSoup
+import requests
 
+from src.scraper import calendar_page
+from src.formats import calendar_dict
 
 class CalendarPageTest(unittest.TestCase):
 
@@ -44,15 +45,16 @@ class ScrapeCalendarTest(unittest.TestCase):
 	def setUp(self):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
 		# scraper.py.get_calenda_data
-		# returns dict {lesson: {date:v, in_class:v, due:v, }	
-		self.calendar = format_calendar_data(self.url)
+		# returns dict {lesson: {date:v, in_class:v, due:v, }
+		self.table_rows = calendar_page(self.url)	
+		self.calendar = calendar_dict(self.table_rows)
 	
 	def test_scrape_calendar_method_returns_table_rows(self):
 		response = requests.get(self.url)
 		soup = BeautifulSoup(response.text)
 		expected_rows = soup.find_all('tr')[1:]
 
-		rows = scrape_calendar(self.url)
+		rows = calendar_page(self.url)
 
 		assert rows == expected_rows
 		assert len(rows) is 18
@@ -103,8 +105,22 @@ class ScrapeCalendarTest(unittest.TestCase):
 		today = time.strftime("%m/%d")
 		for value in self.calendar.values():
 			date = time.strptime(value['date'], "%m/%d")
-			date = time.strftime("%m/%d", date)
+			date = time.strftime("%m/%d", date)  # 1 -> 01, etc.
 			if today < "09/01":
 				assert date < "09/01"
 			elif today > "09/01":
 				assert date > "09/01"
+
+
+class ScheduleInterfaceTest(unittest.TestCase):
+
+	# type python schedule.py
+	# get schedule for the rest of the year
+	# display remaining func
+	# due in x days: date
+	# quiz {0} worth {1} points
+	# lab {0} worth {1} points
+	pass
+
+
+
