@@ -1,4 +1,4 @@
-# Planner
+# pyStudent
 
 For fun.
 A series of modules to scrape the class website and

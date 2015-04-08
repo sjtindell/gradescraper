@@ -5,8 +5,9 @@ import unittest
 from bs4 import BeautifulSoup
 import requests
 
+from src.interface import display_next_week, display_remaining_weeks
 from src.scraper import calendar_page
-from src.formats import calendar_dict
+
 
 class CalendarPageTest(unittest.TestCase):
 
@@ -46,43 +47,41 @@ class ScrapeCalendarTest(unittest.TestCase):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
 		# scraper.py.get_calenda_data
 		# returns dict {lesson: {date:v, in_class:v, due:v, }
-		self.table_rows = calendar_page(self.url)	
-		self.calendar = calendar_dict(self.table_rows)
+		self.calendar = calendar_page(self.url)
 	
-	def test_scrape_calendar_method_returns_table_rows(self):
+	def test_calendar_page_returns_all_rows(self):
 		response = requests.get(self.url)
 		soup = BeautifulSoup(response.text)
 		expected_rows = soup.find_all('tr')[1:]
-
-		rows = calendar_page(self.url)
-
-		assert rows == expected_rows
-		assert len(rows) is 18
+		returned_rows = calendar_page(self.url)
+		assert len(expected_rows) == len(returned_rows)
 		
-	# {lesson # {class date, activities in class, due today}}
 	def test_check_schedule_dict_lessons_int_range(self):	
-		site_range = (int(key) for key in self.calendar.keys() if key)
-		assert sum(site_range) is sum(range(1, 16))
-
+		lesson_num_sum = 0
+		for row_dict in self.calendar:
+			if row_dict['lesson']:
+				lesson_num_sum += int(row_dict['lesson'])
+		assert lesson_num_sum == sum(range(1, 16))
+		
 	def test_check_schedule_dict_dates_format(self):
 		date_pattern = re.compile('^[0-9]+[/][0-9]+$')
-		for value in self.calendar.values():
-			assert date_pattern.match(value['date'])
+		for row in self.calendar:
+			assert date_pattern.match(row['date'])
 
 	def test_check_schedule_dict_number_of_activities(self):
 		quizzes, tests = 0, 0
-		for value in self.calendar.values():
-			assignment = value['activity']
-			if 'Quiz' in assignment:
+		for row in self.calendar:
+			activity = row['activity']
+			if 'Quiz' in activity:
 				quizzes += 1
-			elif 'Test' in assignment:
+			elif 'Test' in activity:
 				tests += 1
 		assert quizzes is 10
 		assert tests is 3
 				
 		# due today
 		# right number of labs, forums
-	def test_check_schedule_dict_number_of_labs_and_forums(self):
+	def test_check_schedule_dict_number_of_assigments(self):
 		check_strings = {
 			'Lab': 0, 
 			'posts': 0, 
@@ -92,35 +91,37 @@ class ScrapeCalendarTest(unittest.TestCase):
 			'X2': 0
 		}
 		
-		for assignment_list in self.calendar.values():
-			for assign in assignment_list['due']:
+		for row in self.calendar:
+			for assignment in row['due']:
 				for string in check_strings.keys():
-					if string in assign:
-							check_strings[string] += 1
-			
+					if string in assignment:
+						check_strings[string] += 1
+
 		expected = (12, 4, 1, 1, 1, 1)
-		assert sum(expected) is sum(check_strings.values())
+		assert sum(check_strings.values()) == sum(expected)
 			
 	def test_correct_dates_for_spring_and_fall(self):
 		today = time.strftime("%m/%d")
-		for value in self.calendar.values():
-			date = time.strptime(value['date'], "%m/%d")
-			date = time.strftime("%m/%d", date)  # 1 -> 01, etc.
+		for row in self.calendar:
+			date = row['date']
+			# spring starts jan so if fall
+			# hasnt started yet we must be 1 - 9
 			if today < "09/01":
 				assert date < "09/01"
+			# fall ends late december so if not spring
+			# we must be range 9 - 12
 			elif today > "09/01":
 				assert date > "09/01"
 
 
 class ScheduleInterfaceTest(unittest.TestCase):
 
-	# type python schedule.py
-	# get schedule for the rest of the year
-	# display remaining func
-	# due in x days: date
-	# quiz {0} worth {1} points
-	# lab {0} worth {1} points
-	pass
+	def test_import_point_values(self):
+		from point_values import QUIZ, LAB, FORUMS, TEST, PROJECT, X1, X2
+		total = sum(int(var) for var in (QUIZ, LAB, FORUMS, TEST, PROJECT, X1, X2))
+		assert total == 203
+
+
 
 
 

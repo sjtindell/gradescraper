@@ -1,14 +1,23 @@
-import formats
+import time
+
 import scraper
 from point_values import *  
 # QUIZ, LAB, FORUMS, 
 # TEST, PROJECT, X1, X2
 
 
-def display_next_week():
-	pass
+def retrieve_data():
+	url = 'http://simms-teach.com/cis90calendar.php'
+	lessons = scraper.calendar_page(url)
+	return lessons
 
-def display_remaining():
+def display_next_week():
+	# due in x days: date
+	# quiz {0} worth {1} points
+	# lab {0} worth {1} points
+	pass	
+	
+def display_remaining_weeks():
 	pass
 
 
