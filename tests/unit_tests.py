@@ -117,8 +117,8 @@ class ScrapeCalendarTest(unittest.TestCase):
 class ScheduleInterfaceTest(unittest.TestCase):
 
 	def test_import_point_values(self):
-		from point_values import QUIZ, LAB, FORUMS, TEST, PROJECT, X1, X2
-		total = sum(int(var) for var in (QUIZ, LAB, FORUMS, TEST, PROJECT, X1, X2))
+		from point_values import point_values
+		total = sum(point_values.values())
 		assert total == 203
 
 
