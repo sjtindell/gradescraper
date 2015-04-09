@@ -1,14 +1,12 @@
 # for organization
 
-QUIZ = 3
-LAB = 30
-FORUMS = 20
-TEST = 30
-PROJECT = 60
-X1 = 30
-X2 = 30
-
-TOTAL = QUIZ + LAB + FORUMS + TEST + PROJECT + X1 + X2
-
-EXTRA_CREDIT = 90
+point_values = {
+	'Quiz': 3,
+	'Lab': 30,
+	'posts': 20,
+	'Test': 30,
+	'Project': 60,
+	'X1': 30,
+	'X2': 30
+}
 
