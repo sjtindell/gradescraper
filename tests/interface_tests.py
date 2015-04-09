@@ -8,7 +8,7 @@ from src.scraper import calendar_page
 
 
 
-class ScheduleInterfaceTest(unittest.TestCase):
+class NextWeekInterfaceTest(unittest.TestCase):
 
 	def setUp(self):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
@@ -42,7 +42,7 @@ class ScheduleInterfaceTest(unittest.TestCase):
 				self.assertFalse(days > 7)
 				break
 
-	def test_disp_next_week_output(self):
+	def test_correct_strings_in_output(self):
 		display_next_week()
 		output = sys.stdout.getvalue().strip()
 		assert 'due in' in output

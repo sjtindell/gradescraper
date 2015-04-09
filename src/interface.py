@@ -1,3 +1,4 @@
+import sys
 import time
 
 import scraper
@@ -28,7 +29,8 @@ def display_next_week():
 	# lab {0} worth {1} points
 
 display_next_week()
-	
+output = sys.stdout.getvalue().strip()
+print output	
 def display_remaining_weeks():
 	pass
 
