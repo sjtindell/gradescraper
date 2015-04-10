@@ -36,12 +36,6 @@ def calendar_page(url):
 			activity = str(topics.a.text[:8])  # [:8] no extraneous text
 		elif 'Test' in str(topics):
 			activity = str(topics.text[:8])
-		elif date == '1/28':
-			activity = 'First Day'
-		elif date == '2/7':
-			activity = 'Last Day to Add CIS90'
-		elif date == '4/1':
-			activity = 'Spring Break'
 		else:
 			activity = ''
 
