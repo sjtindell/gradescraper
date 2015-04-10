@@ -43,7 +43,7 @@ def calendar_page(url):
 		elif date == '4/1':
 			activity = 'Spring Break'
 		else:
-			activity = 'None'
+			activity = ''
 
 		due = [str(entry.text) for entry in entries[4].find_all('a')]
 		
