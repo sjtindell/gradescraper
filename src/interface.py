@@ -1,5 +1,5 @@
 import sys
-import time
+from time import mktime, strptime, strftime, localtime
 
 import scraper
 from point_values import point_values
@@ -10,12 +10,12 @@ def retrieve_data():
 	return scraper.calendar_page(url)
 
 def display_next_week():
-	today = time.strftime("%m/%d")
+	today = strftime("%m/%d")
 	for row in retrieve_data():
 		date = row['date']
 		if date > today:
-			days = int(date[3:]) - int(today[3:])
-			print 'due in', days, 'days:', date
+			diff = int(date[3:]) - int(today[3:])
+			print 'due in', diff, 'days:', date
 			
 			for name, value in point_values.items():
 				for assignment in row['due']:
@@ -25,15 +25,25 @@ def display_next_week():
 				if name in row['activity']:
 					print row['activity'], 'worth', value, 'points'
 			break
-	# quiz {0} worth {1} points
-	# lab {0} worth {1} points
 
-display_next_week()
-output = sys.stdout.getvalue().strip()
-print output	
 def display_remaining_weeks():
-	pass
-
+	today = strftime("%m/%d")
+	for row in retrieve_data():
+		date = row['date']
+		if date > today:	
+			if date[:2] == today[:2]:
+				diff = int(date[3:]) - int(today[3:])
+			elif date[:2] > today[:2]:
+				diff = int(date[3:]) - int(today[3:]) + 30
+			print '\ndue in', diff, 'days:', date
+			
+			for name, value in point_values.items():
+				for assignment in row['due']:
+					if name in assignment:
+						print assignment, 'worth', value, 'points'
+				
+				if name in row['activity']:
+					print row['activity'], 'worth', value, 'points'
 
 def display_user_summary():
 	pass
