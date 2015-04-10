@@ -6,7 +6,5 @@ point_values = {
 	'posts': 20,
 	'Test': 30,
 	'Project': 60,
-	'X1': 30,
-	'X2': 30
 }
 
