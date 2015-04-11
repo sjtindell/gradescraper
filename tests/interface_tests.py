@@ -1,3 +1,4 @@
+import re
 import sys
 import time
 import unittest
@@ -42,12 +43,18 @@ class NextWeekInterfaceTest(unittest.TestCase):
 				self.assertFalse(days > 7)
 				break
 
-	def test_correct_strings_in_output(self):
+	def test_due_in_string_in_output(self):
 		display_schedule(one_week=True)
 		output = sys.stdout.getvalue().strip()
 		assert 'due in' in output
-		assert 'worth' in output
-		
+
+	def test_date_string_in_output(self):
+		display_schedule(one_week=True)
+		output = sys.stdout.getvalue().strip()
+		pattern = re.compile(r'^[0-9]+[/][0-9]+$')
+		line_one = output[:21]
+		possible_date = line_one.split()[4]
+		self.assertTrue(pattern.match(possible_date))
 
 class RemainingWeeksInterfaceTest(unittest.TestCase):
 
@@ -55,8 +62,8 @@ class RemainingWeeksInterfaceTest(unittest.TestCase):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
 		self.calendar = calendar_page(self.url)
 		self.today = time.strftime('%m/%d')
-
-	def test_date_difference_not_too_big(self):
+	
+	def test_calendar_date_difference(self):
 		for row in self.calendar:
 			date = row['date']
 			diff = 0
@@ -67,11 +74,45 @@ class RemainingWeeksInterfaceTest(unittest.TestCase):
 					diff = int(date[3:]) - int(self.today[3:]) + 30
 			self.assertFalse(diff > 180)
 
-	def test_correct_strings_in_output(self):
+	def test_simple_strings_in_output(self):
 		display_schedule()
 		output = sys.stdout.getvalue().strip()
+		print output
 		assert 'due in' in output
 		assert 'worth' in output
 
-			
+	def test_output_days_left_in_ascending_order(self):
+		display_schedule()
+		output = sys.stdout.getvalue().strip()
+		previous = 0
+		for line in output:
+			if 'due in' in line:
+				line = line.split()
+				days_left = int(line[2])
+				self.assertTrue(days_left > previous)
+				previous = days_left
 	
+	def test_date_string_in_output(self):
+		display_schedule()
+		output = sys.stdout.getvalue().strip()
+		pattern = re.compile(r'^[0-9]+[/][0-9]+$')
+		line_one = output[:21]
+		possible_date = line_one.split()[4]
+		self.assertTrue(pattern.match(possible_date))
+
+	def test_output_dates_in_ascending_order(self):
+		display_schedule()
+		output = sys.stdout.getvalue().strip()
+		previous_date = ''
+		for line in output:
+			if 'due in' in line:
+				line = line.split()
+				date = line[4]	
+				self.assertTrue(date > previous_date)
+				previous_date = date
+	
+	def test_assignment_names_in_output(self):
+		display_schedule()
+		output = sys.stdout.getvalue().strip()	
+		for assignment_name in point_values.keys():
+			assert assignment_name in output
