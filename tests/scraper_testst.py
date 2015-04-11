@@ -1,4 +1,5 @@
 import re
+import time
 import unittest
 
 from bs4 import BeautifulSoup
