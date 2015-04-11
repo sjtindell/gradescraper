@@ -1,18 +1,14 @@
-import sys
-from time import mktime, strptime, strftime, localtime
+import time
 
 import scraper
 from point_values import point_values
 
 
-def retrieve_data():
-	url = 'http://simms-teach.com/cis90calendar.php'
-	return scraper.calendar_page(url)
-
-
 def display_schedule(one_week=False):
-	today = strftime("%m/%d")
-	for row in retrieve_data():
+	today = time.strftime("%m/%d")
+	url = 'http://simms-teach.com/cis90calendar.php'
+	calendar = scraper.calendar_page(url)
+	for row in calendar:
 		date = row['date']
 		if date > today:	
 			if date[:2] == today[:2]:

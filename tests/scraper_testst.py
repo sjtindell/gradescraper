@@ -1,5 +1,4 @@
 import re
-import time
 import unittest
 
 from bs4 import BeautifulSoup
@@ -39,7 +38,7 @@ class CalendarPageTest(unittest.TestCase):
 		date_pattern = re.compile('^[0-9]+[/][0-9]+$')
 		assert date_pattern.match(date_field)  # datie
 
-	
+
 class ScrapeCalendarTest(unittest.TestCase):
 
 	def setUp(self):
@@ -126,7 +125,6 @@ class ScrapeCalendarTest(unittest.TestCase):
 		if start < self.today < end:
 			for row in self.calendar:
 				self.assertTrue(start < row['date'] < end)
-
 
 
 
