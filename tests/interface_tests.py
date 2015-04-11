@@ -29,8 +29,7 @@ class NextWeekInterfaceTest(unittest.TestCase):
 			for string in due:
 				for word in string.split():
 					all_class_work.append(word)
-
-		print all_class_work
+		
 		for name in point_values.keys():
 			assert name in all_class_work
 
