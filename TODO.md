@@ -1,12 +1,19 @@
-Clean up calendar_page in scraper.py, less if statements, 
-date and string manipulations.
-
+General
 <<<<<<< HEAD
-Add License if necessary.
+- add docstrings/docs
+- add license
+- setup.py
 
-Add docstrings/docs.
-
-Test setup.py
+Code
+- clean up calendar page
+- add spring break, last day to add cis90, etc.
 =======
-2.) Add spring break, last day to add cis90, etc. to display_schedule
->>>>>>> a7a2439248eeba237d1684bb718c9f33c08bd477
+- add license
+- add docstrings/docs
+
+Code
+- add spring break, last day to add cis90, etc.
+- clean up calendar_page
+
+
+>>>>>>> f25d9c2... updated README and TODO

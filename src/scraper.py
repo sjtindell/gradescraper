@@ -45,14 +45,14 @@ def calendar_page(url):
 		# for visual organization.
 		# dates always present.
 
-		page_data = {
+		row_data = {
 			'lesson': lesson,
 			'date': date,
 			'activity': activity,
 			'due': due
 		}
 	
-		rows_list.append(page_data)
+		rows_list.append(row_data)
 	
 	return rows_list
 
