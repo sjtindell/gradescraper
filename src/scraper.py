@@ -8,6 +8,8 @@ url = 'http://simms-teach.com/cis90calendar.php'
 
 
 def calendar_page(url):
+	''' Returns a list in which each item is 
+	a dictionary of values from a row in the calendar.'''
 	response = requests.get(url)
 	soup = BeautifulSoup(response.text)
 
@@ -89,6 +91,9 @@ def grades_page_user_rows(html_soup):
 		student_rows.append(cells)
 	return student_rows
 
-#url = 'http://simms-teach.com/cis90grades.php'
 
+def grades_page(url):
+	response = requests.get(url)
+	soup = BeautifulSoup(response.text)
+	return grades_page_user_rows(soup)
 
