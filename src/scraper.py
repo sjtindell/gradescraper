@@ -56,3 +56,33 @@ def calendar_page(url):
 	
 	return rows_list
 
+
+def grades_ranges(beautiful_soup):
+	# grades table contains grades ranges
+	soup = beautiful_soup
+	table = soup.find('table', attrs={'class': 'grades'})
+	rows = table.find_all('tr')[1:]  # ignore header row
+
+	range_limit = []
+	for row in rows:
+		# ranges are table data ints
+		row = str(row).split('<td>')
+		range_string = row[2].strip('</td>').split()
+		low_grade = range_string[0]
+		range_limit.append(int(low_grade))
+
+	# can add further ranges in future
+	grades_ranges = {
+		'B': range(range_limit[1], range_limit[0]),
+		'C': range(range_limit[2], range_limit[1] -1),
+		}
+		
+	return grades_ranges		
+
+
+url = 'http://simms-teach.com/cis90grades.php'
+
+def grades_page(url):
+	response = requests.get(url)
+	soup = BeautifulSoup(response.text)
+	
