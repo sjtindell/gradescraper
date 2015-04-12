@@ -11,6 +11,7 @@ cal_url = 'http://simms-teach.com/cis90calendar.php'
 calendar = scraper.calendar_page(cal_url)
 
 
+
 def get_user_row(name):
 	for user in user_rows:
 		if name == user[0]:

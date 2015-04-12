@@ -32,4 +32,6 @@ else:
 	interface.display_user_scores(sys.argv[1])
 	see_more()
 	interface.display_user_points_until(sys.argv[1])
+	see_more()
+	interface.display_remaining_points(sys.argv[1])
 	sys.exit(0)	

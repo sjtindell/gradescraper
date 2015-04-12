@@ -77,6 +77,32 @@ def display_user_points_until(name):
 		print 504 - points, "points to get an A...you got this!"
 	
 
-def display_remaining_points():
-	pass
-
+def display_remaining_points(name):
+	today = time.strftime("%m/%d")
+	user_scores = formatter.get_user_row(name)
+	extra_credit = int(user_scores[30])
+	total_points = [ ]
+	for row in formatter.calendar:
+		date = row['date']
+		if date > today:	
+			if date[:2] == today[:2]:
+				diff = int(date[3:]) - int(today[3:])
+			elif date[:2] > today[:2]:
+				diff = int(date[3:]) - int(today[3:]) + 30
+			print
+			print 'due in', diff, 'days:', date
+			
+			for name, value in point_values.items():
+				for assignment in row['due']:
+					if name in assignment:
+						print assignment, 'worth', value, 'points'
+						total_points.append(value)	
+				
+				if name in row['activity']:
+					print row['activity'], 'worth', value, 'points'
+					total_points.append(value)
+	print
+	user_ec = 90 - extra_credit
+	print 'Extra Credit Remaining:', user_ec
+	print 'Total Remaining:', sum(total_points) + user_ec - 60  # correct for lab x1, x2
+	print
