@@ -92,8 +92,12 @@ def grades_page_user_rows(html_soup):
 	return student_rows
 
 
-def grades_page(url):
+def grades_table(url):
 	response = requests.get(url)
 	soup = BeautifulSoup(response.text)
 	return grades_page_user_rows(soup)
 
+def grades_ranges(url):
+	response = requests.get(url)
+	soup = BeautifulSoup(response.text)
+	return grades_page_ranges(soup)

@@ -7,6 +7,16 @@ import sys
 import interface
 
 
+def see_more():
+	print
+	more = raw_input('see more? y/n [y] ')
+	print '-' * 10
+	if more not in ('n', 'no'):
+		pass
+	else:
+		sys.exit(0)
+
+
 if sys.argv[1] == 'schedule':
 	print 'args:', sys.argv
 	print 'calling schedule func...'
@@ -18,4 +28,8 @@ else:
 	print 'args:', sys.argv
 	print 'calling grades funcs...'
 	interface.display_user_summary(sys.argv[1])
+	see_more()
+	interface.display_user_scores(sys.argv[1])
+	see_more()
+	interface.display_user_points_until(sys.argv[1])
 	sys.exit(0)	

@@ -6,3 +6,4 @@ General
 Code
 - clean up calendar page
 - add spring break, last day to add cis90, etc.
+- add possible points w/ ec
