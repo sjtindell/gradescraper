@@ -56,5 +56,57 @@ class ScrapeGradesPageRangesTest(unittest.TestCase):
 		self.assertEqual(ranges['B'], expected_range)
 		
 
-class ScrapeGradesPageUserRowsTest(unittest.TestCase):
-	pass
+class GradesPageUsersTableTest(unittest.TestCase):
+	
+	def setUp(self):
+		self.url = 'http://simms-teach.com/cis90grades.php'
+		self.response = requests.get(self.url)
+		self.soup = BeautifulSoup(self.response.text)
+		self.table = self.soup.find_all('table', attrs={'class': 'grades'})
+
+	def header_row_cells(self, row):
+		cells = row.find_all('td')
+		cells = [str(cell).strip('</td>') for cell in cells]
+		return cells
+		
+	def test_page_has_expected_header(self):
+		self.assertEqual(self.soup.h2.text, 'CIS 90 Grades')
+
+	def test_table_has_expected_header(self):
+		headers = self.soup.find_all('h4')
+		assert 'Current Progress' in [header.text for header in headers]
+
+	def test_table_search_finds_multiple_tables(self):	
+		self.assertEqual(len(self.table), 2)
+	
+	def test_number_of_table_headers(self):
+		row = self.table[1].find_all('tr')[0]
+		cells = self.header_row_cells(row)
+		self.assertEqual(len(cells), 9)
+
+	def test_table_header_strings(self):	
+		row = self.table[1].find_all('tr')[0]
+		cells = self.header_row_cells(row)
+
+		expected_strings = (
+			'Code', 'Grading', 'Quizzes',
+			'Forum', 'Labs', 'Projec',  # correct for </td> stripping t 
+			'Extra', 'Total', 'Grade'
+		)
+
+		for string, cell in zip(expected_strings, cells):
+			assert string in cell
+
+	def test_number_of_assignment_columns(self):
+		row = self.table[1].find_all('tr')[1]
+		cells = self.header_row_cells(row)
+		all_cells_string = ''.join(cells)
+		for test_string in ('Q1', 'Q10', 'L1', 'L10',
+							'T1', 'T3', 'F1', 'F4'):
+			assert test_string in all_cells_string	
+
+	def test_table_max_points_total(self):	
+		row = self.table[1].find_all('tr')[2]
+		cells = self.header_row_cells(row)
+		self.assertEqual(int(cells[-1]), 560)
+
