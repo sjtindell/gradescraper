@@ -27,20 +27,18 @@ def display_schedule(one_week=False):
 				break
 
 	
-def display_user_summary(name):
-	data = UserData(name)	
+def display_user_summary(data):
 	user_total = sum(int(num) for num 
 		in data.user_row[2:] if num != '*')
 	grade = round(float(user_total) / float(data.possible_points), 2) * 100
 	
-	print 'name:', name
+	print 'name:', data.name
 	print 'have:', user_total, 'points'
 	print 'possible:', data.possible_points
 	print 'grade:', str(grade) + '%'
 
 
-def display_user_scores(name):
-	data = UserData(name)
+def display_user_scores(data):
 	for string, num, scores, worth in data.current_assignments:
 		nums = range(1, num + 1)
 		print
@@ -49,8 +47,7 @@ def display_user_scores(name):
 	print 'Extra Credit:', data.user_row[30], 'out of 90'
 
 
-def display_user_points_until(name):
-	data = UserData(name)	
+def display_user_points_until(data):
 	points = sum(int(num) for num 
 		in data.user_row[2:] if num != '*')
 
@@ -69,9 +66,9 @@ def display_user_points_until(name):
 		print 504 - points, "points to get an A...you got this!"
 	
 
-def display_remaining_points(name):
+def display_remaining_points(data):
 	today = time.strftime("%m/%d")
-	user_scores = UserData(name).user_row
+	user_scores = data.user_row
 	extra_credit = int(user_scores[30])
 	total_points = [ ]
 	for row in CalendarPage().calendar:

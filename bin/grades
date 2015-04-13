@@ -1,3 +1,4 @@
 #! /bin/bash
 
-python /home/sam/Code/python/check-grades/src/command_line.py $1
+python /home/sam/Code/python/check-grades/src/command_line.py grades $1
+
