@@ -1,0 +1,4 @@
+#! /bin/bash
+
+python /home/sam/Code/python/check-grades/src/command_line.py schedule
+

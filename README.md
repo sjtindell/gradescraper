@@ -14,9 +14,9 @@ setup
 tests
 - nosetests
 
-python src/command_line.py args
+scripts in /bin
 - schedule : get the remaining semester schedule
-- lotr name : get the grades for that name
+- grades lotrname : get the grades for that name
 
 readme todo:
 TravisCI button w/state of build

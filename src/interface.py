@@ -43,10 +43,11 @@ def display_user_summary(name):
 def display_user_scores(name):
 	row = formatter.get_user_row(name)
 	assignment_data = formatter.grades_page_current_assignments(name)
-	for string, num, scores, worth in assignment_data:
+	for assign_string, assign_num, scores, worth in assignment_data:
+		nums = range(1, assign_num + 1)
 		print
-		for i in range(num):
-			print '{0}{1}:'.format(string, num), scores[i], 'out of', worth, 'points'
+		for i in range(assign_num):
+			print '{0}{1}:'.format(assign_string, nums[i]), scores[i], 'out of', worth, 'points'
 	print 'Extra Credit:', row[30], 'out of 90'
 
 
