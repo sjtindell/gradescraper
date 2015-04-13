@@ -1,12 +1,12 @@
 import time
-
-import formatter
+from scraper import CalendarPage
+from formatter import UserData
 from point_values import point_values
 
 
 def display_schedule(one_week=False):
 	today = time.strftime("%m/%d")
-	for row in formatter.calendar:
+	for row in CalendarPage.calendar:
 		date = row['date']
 		if date > today:	
 			if date[:2] == today[:2]:
@@ -28,59 +28,53 @@ def display_schedule(one_week=False):
 
 	
 def display_user_summary(name):
-	user_points_row = formatter.get_user_row(name)
-	user_total = sum(int(num) for num 
-		in user_points_row[2:] if num != '*')
-	possible = formatter.grades_page_possible_points()
-	grade = round(float(user_total) / float(possible), 2) * 100
-	
-	print 'name:', name
-	print 'have:', user_total, 'points'
-	print 'possible:', possible
-	print 'grade:', str(grade) + '%'
+	with UserData(name) as data:	
+		user_total = sum(int(num) for num 
+			in data.user_row[2:] if num != '*')
+		grade = round(float(user_total) / float(data.possible_points), 2) * 100
+		
+		print 'name:', name
+		print 'have:', user_total, 'points'
+		print 'possible:', data.possible_points
+		print 'grade:', str(grade) + '%'
 
 
 def display_user_scores(name):
-	row = formatter.get_user_row(name)
-	assignment_data = formatter.grades_page_current_assignments(name)
-	for assign_string, assign_num, scores, worth in assignment_data:
-		nums = range(1, assign_num + 1)
-		print
-		for i in range(assign_num):
-			print '{0}{1}:'.format(assign_string, nums[i]), scores[i], 'out of', worth, 'points'
-	print 'Extra Credit:', row[30], 'out of 90'
+	with UserData(name) as data:
+		for string, num, scores, worth in data.current_assignments:
+			nums = range(1, num + 1)
+			print
+			for i in range(num):
+				print '{0}{1}:'.format(string, nums[i]), scores[i], 'out of', worth, 'points'
+		print 'Extra Credit:', data.user_row[30], 'out of 90'
 
 
 def display_user_points_until(name):
-	
-	ranges = formatter.ranges
-	user_points = formatter.get_user_row(name)
-	
-	user_total = sum(int(num) for num 
-		in user_points[2:] if num != '*')
-	points = user_total	
+	with UserData(name) as data:	
+		points = sum(int(num) for num 
+			in data.user_row[2:] if num != '*')
 
-	if points >503:
-		print "You've got an A...good job!"
-	elif points in ranges['B']:
-		#print "a B...too lazy to study, too smart to fail"
-		print "You need", 504 - points, "points for an A"
-	elif points in ranges['C']:
-		#print "C's get degrees...but you only need"
-		print 448 - points, "points for a B"
-		print "and only", 504 - points, "points for an A"
-	else:
-		print "Only", 392 - points, "points to get a C and pass"
-		print 448 - points, "points to get a B"
-		print 504 - points, "points to get an A...you got this!"
+		if points >503:
+			print "You've got an A...good job!"
+		elif points in data.ranges['B']:
+			#print "a B...too lazy to study, too smart to fail"
+			print "You need", 504 - points, "points for an A"
+		elif points in data.ranges['C']:
+			#print "C's get degrees...but you only need"
+			print 448 - points, "points for a B"
+			print "and only", 504 - points, "points for an A"
+		else:
+			print "Only", 392 - points, "points to get a C and pass"
+			print 448 - points, "points to get a B"
+			print 504 - points, "points to get an A...you got this!"
 	
 
 def display_remaining_points(name):
 	today = time.strftime("%m/%d")
-	user_scores = formatter.get_user_row(name)
+	user_scores = UserData(name).user_row
 	extra_credit = int(user_scores[30])
 	total_points = [ ]
-	for row in formatter.calendar:
+	for row in CalendarPage().calendar:
 		date = row['date']
 		if date > today:	
 			if date[:2] == today[:2]:
@@ -100,7 +94,7 @@ def display_remaining_points(name):
 					print row['activity'], 'worth', value, 'points'
 					total_points.append(value)
 	print
-	user_ec = 90 - extra_credit
-	print 'Extra Credit Remaining:', user_ec
-	print 'Total Remaining:', sum(total_points) + user_ec - 60  # correct for lab x1, x2
+	ec = 90 - extra_credit
+	print 'Extra Credit Remaining:', ec
+	print 'Total Remaining:', sum(total_points) - 60 + ec  # correct for lab x1, x2
 	print
