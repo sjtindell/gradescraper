@@ -11,11 +11,15 @@ cal_url = 'http://simms-teach.com/cis90calendar.php'
 calendar = scraper.calendar_page(cal_url)
 
 
-
 def get_user_row(name):
-	for user in user_rows:
-		if name == user[0]:
-			return user
+	for row in user_rows:
+		if name == row[0]:
+			forum_scores = scraper.forum_scores()
+			start = 15
+			stop = start + len(forum_scores)
+			row[start: stop] = forum_scores
+			return row
+
 
 def check_columns(start, stop):
 	

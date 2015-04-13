@@ -1,6 +1,8 @@
+import os
+import time
+
 from bs4 import BeautifulSoup
 import requests
-import time
 
 
 # for testing
@@ -102,4 +104,24 @@ def grades_table(url):
 	soup = BeautifulSoup(response.text)
 	return grades_page_user_rows(soup)
 
+
+def forum_scores():
+	forum_file_names = ['f1.graded', 'f2.graded',
+				  'f3.graded', 'f4.graded']
+	forum_scores = []
+
+	for forum_file_name in forum_file_names:
+		pts = 0
+		home_dir = "/" + os.environ["LOGNAME"].replace("90", "") + "/"
+		# for opus /home/cis90/
+		file_name = "/home/cis90" + home_dir + forum_file_name
+		
+		try:
+			with open(file_name, 'r') as f:
+				line = f.readline()
+				pts = int(line)
+				forum_scores.append(pts)
+		except IOError:
+			continue
+	return forum_scores
 

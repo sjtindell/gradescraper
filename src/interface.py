@@ -1,8 +1,5 @@
 import time
 
-import requests
-from bs4 import BeautifulSoup
-
 import formatter
 from point_values import point_values
 
