@@ -1,8 +1,11 @@
+import re
 import unittest
+
 import requests
 from bs4 import BeautifulSoup
 
-from src.scraper import grades_page_ranges, grades_page_user_rows
+from src.scraper import (grades_page_ranges, grades_page_user_rows,
+						 grades_ranges, grades_table)
 
 
 class ScrapeGradesPageRangesTest(unittest.TestCase):
@@ -98,6 +101,13 @@ class GradesPageUsersTableTest(unittest.TestCase):
 			assert string in cell
 
 	def test_number_of_assignment_columns(self):
+		# excluding project, extra credit, total
+		# expects just Q1-10, L1-10, etc.
+		row = self.table[1].find_all('tr')[1]
+		cells = self.header_row_cells(row)
+		self.assertEqual(len(cells), 27)
+	
+	def test_assignment_column_strings(self):
 		row = self.table[1].find_all('tr')[1]
 		cells = self.header_row_cells(row)
 		all_cells_string = ''.join(cells)
@@ -109,4 +119,48 @@ class GradesPageUsersTableTest(unittest.TestCase):
 		row = self.table[1].find_all('tr')[2]
 		cells = self.header_row_cells(row)
 		self.assertEqual(int(cells[-1]), 560)
+
+	def test_table_user_row_format(self):	
+		row = self.table[1].find_all('tr')[3]
+		cells = self.header_row_cells(row)
+		cells = [str(cell).strip('</td>') for cell in cells]
+		cells = [str(0) if cell == '\xc2\xa0' else cell for cell in cells]
+		all_cells_string = ''.join(cells)
+		row_pattern = re.compile('^[a-z]+[0-9]+[*][*][0-9]+$')
+		self.assertTrue(row_pattern.match(all_cells_string))
+	
+
+class GradesPageUserRowsFuncTest(unittest.TestCase):
+		
+		def setUp(self):
+			self.url = 'http://simms-teach.com/cis90grades.php'
+			self.response = requests.get(self.url)
+			self.soup = BeautifulSoup(self.response.text)
+
+			self.my_table = grades_table(self.url)
+		
+		def test_return_table_row_format(self):
+			returned_row = [str(score) for score in self.my_table[3]]
+			all_cells_string = ''.join(returned_row)
+			row_pattern = re.compile('^[a-z]+[0-9]+[*][*][0-9]+$')
+			self.assertTrue(row_pattern.match(all_cells_string))
+
+		def test_return_table_row_length(self):
+			returned_row = [str(score) for score in self.my_table[3]]
+			#name,gradingchoice, Q1-10, T1-3, F1-4, L1-10, Proj, EC, T, G
+			self.assertEqual(len(returned_row), 33)	
+
+		def test_return_a_few_lotr_names(self):
+			returned_row = [str(score) for row in self.my_table for score in row]
+			assert 'boromir' in returned_row
+			assert 'strider' in returned_row
+			assert 'frodo' in returned_row
+
+		def test_returned_scores_seem_appropriate(self):
+			user_row = self.my_table[5]
+			# expected assignment values: quiz, test, lab
+			self.assertTrue(int(user_row[5]) < 5)
+			self.assertTrue(int(user_row[12]) < 35)
+			self.assertTrue(int(user_row[24]) < 32)
+
 

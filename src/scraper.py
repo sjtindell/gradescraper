@@ -4,7 +4,8 @@ import time
 
 
 # for testing
-url = 'http://simms-teach.com/cis90calendar.php'
+urls = ('http://simms-teach.com/cis90calendar.php',
+		'http://simms-teach.com/cis90grades.php')
 
 
 def calendar_page(url):
@@ -80,6 +81,11 @@ def grades_page_ranges(html_soup):
 		
 	return grades_ranges		
 
+def grades_ranges(url):
+	response = requests.get(url)
+	soup = BeautifulSoup(response.text)
+	return grades_page_ranges(soup)
+
 
 def grades_page_user_rows(html_soup):
 	student_rows = [ ]
@@ -91,13 +97,9 @@ def grades_page_user_rows(html_soup):
 		student_rows.append(cells)
 	return student_rows
 
-
 def grades_table(url):
 	response = requests.get(url)
 	soup = BeautifulSoup(response.text)
 	return grades_page_user_rows(soup)
 
-def grades_ranges(url):
-	response = requests.get(url)
-	soup = BeautifulSoup(response.text)
-	return grades_page_ranges(soup)
+
