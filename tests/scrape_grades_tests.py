@@ -4,8 +4,7 @@ import unittest
 import requests
 from bs4 import BeautifulSoup
 
-from src.scraper import (grades_page_ranges, grades_page_user_rows,
-						 grades_ranges, grades_table)
+from src.scraper import GradesPage
 
 
 class ScrapeGradesPageRangesTest(unittest.TestCase):
@@ -37,17 +36,20 @@ class ScrapeGradesPageRangesTest(unittest.TestCase):
 			i += 1
 
 	def test_scrape_ranges_returns_grades_as_keys(self):
-		ranges = grades_page_ranges(self.soup)
+		page = GradesPage()
+		ranges = page.grade_ranges_table
 		for grade in ('B', 'C'):
 			assert grade in ranges.keys()
 
 	def test_scrape_ranges_returns_lists_of_ints_as_values(self):	
-		ranges = grades_page_ranges(self.soup)
+		page = GradesPage()
+		ranges = page.grade_ranges_table
 		assert type(ranges) is dict
 		assert type(ranges.values()[0]) is list
 
 	def test_scrape_range_returns_correct_range(self):
-		ranges = grades_page_ranges(self.soup)
+		page = GradesPage()
+		ranges = page.grade_ranges_table
 		tmp = [ ]
 		for row in self.rows:
 			row = str(row).split('<td>')
@@ -136,8 +138,7 @@ class GradesPageUserRowsFuncTest(unittest.TestCase):
 			self.url = 'http://simms-teach.com/cis90grades.php'
 			self.response = requests.get(self.url)
 			self.soup = BeautifulSoup(self.response.text)
-
-			self.my_table = grades_table(self.url)
+			self.my_table = GradesPage().grade_rows_table
 		
 		def test_return_table_row_format(self):
 			returned_row = [str(score) for score in self.my_table[3]]

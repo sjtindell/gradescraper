@@ -1,4 +1,4 @@
-# pyStudent
+# check-grades
 
 For convenience.
 Scrape the class website and
@@ -16,7 +16,7 @@ tests
 
 scripts in /bin
 - schedule : get the remaining semester schedule
-- grades lotrname : get the grades for that name
+- grades : get the grades for arg[1] lotr name
 
 readme todo:
 TravisCI button w/state of build

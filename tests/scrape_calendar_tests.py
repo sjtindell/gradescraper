@@ -5,7 +5,7 @@ import unittest
 from bs4 import BeautifulSoup
 import requests
 
-from src.scraper import calendar_page
+from src.scraper import CalendarPage
 
 
 class CalendarPageTest(unittest.TestCase):
@@ -47,13 +47,13 @@ class ScrapeCalendarTest(unittest.TestCase):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
 		# scraper.py.get_calenda_data
 		# returns dict {lesson: {date:v, in_class:v, due:v, }
-		self.calendar = calendar_page(self.url)
+		self.calendar = CalendarPage().calendar
 	
 	def test_calendar_page_returns_all_rows(self):
 		response = requests.get(self.url)
 		soup = BeautifulSoup(response.text)
 		expected_rows = soup.find_all('tr')[1:]
-		returned_rows = calendar_page(self.url)
+		returned_rows = self.calendar
 		assert len(expected_rows) == len(returned_rows)
 		
 	def test_check_schedule_dict_lessons_int_range(self):	

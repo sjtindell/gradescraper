@@ -31,12 +31,6 @@ class CalendarPage(object):
 			rows_list.append(row_data)	
 		return rows_list
 
-	def __enter__(self):
-		return self
-	
-	def __exit__(self, sysin, sysout, syserr):
-		pass
-
 	def row_lesson(self, entries):
 		# unicode -> ascii ignore '\xa0'
 		lesson = entries[0].string.encode('ascii', 'ignore')
@@ -124,10 +118,5 @@ class GradesPage(object):
 			student_rows.append(cells)
 		return student_rows
 	
-	def __enter__(self):
-		return self
-	
-	def __exit__(self, sysin, sysout, syserr):
-		pass
 
 

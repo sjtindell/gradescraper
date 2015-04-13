@@ -6,10 +6,10 @@ class UserData(object):
 	
 	def __init__(self, name):
 		self.name = name
-		with GradesPage() as page:
-			self.user_rows = page.grade_rows_table[3:]
-			self.ranges = page.grade_ranges_table
-			self.forum_scores = page.forum_scores
+		self.page = GradesPage()
+		self.user_rows = self.page.grade_rows_table[3:]
+		self.ranges = self.page.grade_ranges_table
+		self.forum_scores = self.page.forum_scores
 
 	@property
 	def user_row(self):
@@ -73,9 +73,4 @@ class UserData(object):
 		
 		return combined_data	
 
-	def __enter__(self):
-		return self
-	
-	def __exit__(self, sysin, sysout, syserr):
-		pass
 

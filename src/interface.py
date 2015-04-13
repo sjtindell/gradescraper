@@ -6,7 +6,7 @@ from point_values import point_values
 
 def display_schedule(one_week=False):
 	today = time.strftime("%m/%d")
-	for row in CalendarPage.calendar:
+	for row in CalendarPage().calendar:
 		date = row['date']
 		if date > today:	
 			if date[:2] == today[:2]:
@@ -28,45 +28,45 @@ def display_schedule(one_week=False):
 
 	
 def display_user_summary(name):
-	with UserData(name) as data:	
-		user_total = sum(int(num) for num 
-			in data.user_row[2:] if num != '*')
-		grade = round(float(user_total) / float(data.possible_points), 2) * 100
-		
-		print 'name:', name
-		print 'have:', user_total, 'points'
-		print 'possible:', data.possible_points
-		print 'grade:', str(grade) + '%'
+	data = UserData(name)	
+	user_total = sum(int(num) for num 
+		in data.user_row[2:] if num != '*')
+	grade = round(float(user_total) / float(data.possible_points), 2) * 100
+	
+	print 'name:', name
+	print 'have:', user_total, 'points'
+	print 'possible:', data.possible_points
+	print 'grade:', str(grade) + '%'
 
 
 def display_user_scores(name):
-	with UserData(name) as data:
-		for string, num, scores, worth in data.current_assignments:
-			nums = range(1, num + 1)
-			print
-			for i in range(num):
-				print '{0}{1}:'.format(string, nums[i]), scores[i], 'out of', worth, 'points'
-		print 'Extra Credit:', data.user_row[30], 'out of 90'
+	data = UserData(name)
+	for string, num, scores, worth in data.current_assignments:
+		nums = range(1, num + 1)
+		print
+		for i in range(num):
+			print '{0}{1}:'.format(string, nums[i]), scores[i], 'out of', worth, 'points'
+	print 'Extra Credit:', data.user_row[30], 'out of 90'
 
 
 def display_user_points_until(name):
-	with UserData(name) as data:	
-		points = sum(int(num) for num 
-			in data.user_row[2:] if num != '*')
+	data = UserData(name)	
+	points = sum(int(num) for num 
+		in data.user_row[2:] if num != '*')
 
-		if points >503:
-			print "You've got an A...good job!"
-		elif points in data.ranges['B']:
-			#print "a B...too lazy to study, too smart to fail"
-			print "You need", 504 - points, "points for an A"
-		elif points in data.ranges['C']:
-			#print "C's get degrees...but you only need"
-			print 448 - points, "points for a B"
-			print "and only", 504 - points, "points for an A"
-		else:
-			print "Only", 392 - points, "points to get a C and pass"
-			print 448 - points, "points to get a B"
-			print 504 - points, "points to get an A...you got this!"
+	if points >503:
+		print "You've got an A...good job!"
+	elif points in data.ranges['B']:
+		#print "a B...too lazy to study, too smart to fail"
+		print "You need", 504 - points, "points for an A"
+	elif points in data.ranges['C']:
+		#print "C's get degrees...but you only need"
+		print 448 - points, "points for a B"
+		print "and only", 504 - points, "points for an A"
+	else:
+		print "Only", 392 - points, "points to get a C and pass"
+		print 448 - points, "points to get a B"
+		print 504 - points, "points to get an A...you got this!"
 	
 
 def display_remaining_points(name):

@@ -5,7 +5,7 @@ import unittest
 
 from src.interface import display_schedule
 from src.point_values import point_values
-from src.scraper import calendar_page
+from src.scraper import CalendarPage
 
 
 
@@ -13,7 +13,7 @@ class NextWeekInterfaceTest(unittest.TestCase):
 
 	def setUp(self):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
-		self.calendar = calendar_page(self.url)
+		self.calendar = CalendarPage().calendar
 		self.today = time.strftime('%m/%d')
 		
 	def test_point_values_total(self):
@@ -59,7 +59,7 @@ class RemainingWeeksInterfaceTest(unittest.TestCase):
 
 	def setUp(self):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
-		self.calendar = calendar_page(self.url)
+		self.calendar = CalendarPage().calendar
 		self.today = time.strftime('%m/%d')
 	
 	def test_calendar_date_difference(self):
