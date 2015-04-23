@@ -13,17 +13,13 @@ def see_more():
 	else:
 		sys.exit(0)
 
-def remaining_weeks():	
-	print 'args:', sys.argv
-	print 'calling schedule func...'
-	#url = 'http://simms-teach.com/cis90calendar.php'
-	#calendar = scraper.calendar_page(url)
-	interface.display_schedule()
 
 def user_grades():
-	print 'args:', sys.argv
-	print 'calling grades funcs...'
+	#print 'args:', sys.argv
+	#print 'calling grades funcs...'
+	#print 'should be user:', sys.argv[2]
 	data = UserData(sys.argv[2])
+	#print data
 	interface.display_user_summary(data)
 	see_more()
 	interface.display_user_scores(data)
@@ -34,10 +30,10 @@ def user_grades():
 
 
 if sys.argv[1] == 'schedule':
-	remaining_weeks()
+	#print 'args:', sys.argv
+	#print 'calling schedule func...'
+	#url = 'http://simms-teach.com/cis90calendar.php'
+	#calendar = scraper.calendar_page(url)
+	interface.display_schedule()
 elif sys.argv[1] == 'grades':
-	try:
-		user_grades()
-	except:
-		print '-' * 10
-		print 'Unexpected argument.'
+	user_grades()

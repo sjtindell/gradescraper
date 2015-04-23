@@ -3,6 +3,8 @@ from point_values import point_values
 
 
 class UserData(object):
+	'''Returns an object storing all class grades data as well
+	   as info for a specific user.'''
 	
 	def __init__(self, name):
 		self.name = name

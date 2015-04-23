@@ -1,26 +1,26 @@
-import os
-import time
 from bs4 import BeautifulSoup
+import os
 import requests
+import time
 
-
-class CalendarPageError(Exception):
-	pass
 
 class CalendarPage(object):
+	'''Scrape and organize the Calendar web page.'''
 
 	def __init__(self):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
 		self.response = requests.get(self.url)
-		self.soup = BeautifulSoup(self.response.text)
+		self.soup = BeautifulSoup(self.response.text, 'html.parser')  # needs html 5 parser specification on centos/py 2.6
 		self.table_rows = self.soup.find_all('tr')[1:]
 	
-	@property
+	@property  # decorator allows calling by simple name
 	def calendar(self):
 		rows_list = []
 		for row in self.table_rows:
 			entries = row.find_all('td')  # table data
-			
+	
+			# calls the other methods from this class,
+			# split for organization	
 			row_data = {
 				'lesson': self.row_lesson(entries),
 				'date': self.row_date(entries),
@@ -57,27 +57,29 @@ class CalendarPage(object):
 		return due
 
 
-class GradesPageError(Exception):
-	pass
-
 class GradesPage(object):
 	
 	def __init__(self):
 		self.url = 'http://simms-teach.com/cis90grades.php'
 		self.response = requests.get(self.url)
-		self.soup = BeautifulSoup(self.response.text)
+		self.soup = BeautifulSoup(self.response.text, 'html.parser')
 
+	# author Rich Simms 2014
+	# function to scrape private forum
+	# scores from files in each specific
+	# user's home directory
 	@property
 	def forum_scores(self):
 		forum_file_names = ['f1.graded', 'f2.graded',
-					  'f3.graded', 'f4.graded']
+			'f3.graded', 'f4.graded']
 		forum_scores = []
 
 		for forum_file_name in forum_file_names:
 			pts = 0
 			home_dir = "/" + os.environ["LOGNAME"].replace("90", "") + "/"
 			# for opus /home/cis90/
-			file_name = "home/cis90" + home_dir + forum_file_name
+			# for test home/cis90
+			file_name = "/home/cis90" + home_dir + forum_file_name
 			
 			try:
 				with open(file_name, 'r') as f:
@@ -88,6 +90,7 @@ class GradesPage(object):
 				continue
 		return forum_scores
 
+	# different ranges for an A, B, C, etc.
 	@property
 	def grade_ranges_table(self):
 		table = self.soup.find('table', attrs={'class': 'grades'})

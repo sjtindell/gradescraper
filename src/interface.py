@@ -25,7 +25,6 @@ def display_schedule(one_week=False):
 					print row['activity'], 'worth', value, 'points'
 			if one_week:
 				break
-
 	
 def display_user_summary(data):
 	user_total = sum(int(num) for num 
