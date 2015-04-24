@@ -13,7 +13,7 @@ class CalendarPageTest(unittest.TestCase):
 	def setUp(self):
 		self.url = 'http://simms-teach.com/cis90calendar.php'
 		self.response = requests.get(self.url)
-		self.soup = BeautifulSoup(self.response.text)
+		self.soup = BeautifulSoup(self.response.text, 'html.parser')
 	
 	def test_site_is_up(self):
 		assert self.response.status_code is 200
@@ -51,7 +51,7 @@ class ScrapeCalendarTest(unittest.TestCase):
 	
 	def test_calendar_page_returns_all_rows(self):
 		response = requests.get(self.url)
-		soup = BeautifulSoup(response.text)
+		soup = BeautifulSoup(response.text, 'html.parser')
 		expected_rows = soup.find_all('tr')[1:]
 		returned_rows = self.calendar
 		assert len(expected_rows) == len(returned_rows)

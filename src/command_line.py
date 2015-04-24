@@ -13,20 +13,26 @@ def see_more():
 	else:
 		sys.exit(0)
 
+class BadArgument(Exception):
+	pass
+
 
 def user_grades():
 	#print 'args:', sys.argv
 	#print 'calling grades funcs...'
 	#print 'should be user:', sys.argv[2]
-	data = UserData(sys.argv[2])
-	#print data
-	interface.display_user_summary(data)
-	see_more()
-	interface.display_user_scores(data)
-	see_more()
-	interface.display_user_points_until(data)
-	see_more()
-	interface.display_remaining_points(data)
+	try:
+		data = UserData(sys.argv[2])
+		#print data
+		interface.display_user_summary(data)
+		see_more()
+		interface.display_user_scores(data)
+		see_more()
+		interface.display_user_points_until(data)
+		see_more()
+		interface.display_remaining_points(data)
+	except TypeError:
+		print 'Invalid lotr name.'
 
 
 if sys.argv[1] == 'schedule':

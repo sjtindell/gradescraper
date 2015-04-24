@@ -7,8 +7,7 @@ usage = '''usage:
 forums <-> topics <-> posts
 press the # of the forum/topic to browse to it
 press b to back out to the previous level
-press q to quit
-modify forums.py to add keys'''
+press q to quit'''
 
 # {forum name: link}
 # {forum name: [(topictitle, link), ...]}

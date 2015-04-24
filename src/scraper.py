@@ -13,7 +13,9 @@ class CalendarPage(object):
 		self.soup = BeautifulSoup(self.response.text, 'html.parser')  # needs html 5 parser specification on centos/py 2.6
 		self.table_rows = self.soup.find_all('tr')[1:]
 	
-	@property  # decorator allows calling by simple name
+	# property decorator allows calling returned func value by func name
+	# eg for row in CalendarPage.calendar
+	@property
 	def calendar(self):
 		rows_list = []
 		for row in self.table_rows:

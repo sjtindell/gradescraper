@@ -12,7 +12,7 @@ class ScrapeGradesPageRangesTest(unittest.TestCase):
 	def setUp(self):
 		self.url = 'http://simms-teach.com/cis90grades.php'
 		self.response = requests.get(self.url)
-		self.soup = BeautifulSoup(self.response.text)
+		self.soup = BeautifulSoup(self.response.text, 'html.parser')
 		self.table = self.soup.find('table', attrs={'class': 'grades'})
 		self.rows = self.table.find_all('tr')[1:]  # ignore header row
 	
@@ -66,7 +66,7 @@ class GradesPageUsersTableTest(unittest.TestCase):
 	def setUp(self):
 		self.url = 'http://simms-teach.com/cis90grades.php'
 		self.response = requests.get(self.url)
-		self.soup = BeautifulSoup(self.response.text)
+		self.soup = BeautifulSoup(self.response.text, 'html.parser')
 		self.table = self.soup.find_all('table', attrs={'class': 'grades'})
 
 	def header_row_cells(self, row):
@@ -128,7 +128,7 @@ class GradesPageUsersTableTest(unittest.TestCase):
 		cells = [str(cell).strip('</td>') for cell in cells]
 		cells = [str(0) if cell == '\xc2\xa0' else cell for cell in cells]
 		all_cells_string = ''.join(cells)
-		row_pattern = re.compile('^[a-z]+[0-9]+[*][*][0-9]+$')
+		row_pattern = re.compile('^[a-z]+[0-9]+[*]+[0-9]+$')
 		self.assertTrue(row_pattern.match(all_cells_string))
 	
 
@@ -137,13 +137,13 @@ class GradesPageUserRowsFuncTest(unittest.TestCase):
 		def setUp(self):
 			self.url = 'http://simms-teach.com/cis90grades.php'
 			self.response = requests.get(self.url)
-			self.soup = BeautifulSoup(self.response.text)
+			self.soup = BeautifulSoup(self.response.text, 'html.parser')
 			self.my_table = GradesPage().grade_rows_table
 		
 		def test_return_table_row_format(self):
 			returned_row = [str(score) for score in self.my_table[3]]
 			all_cells_string = ''.join(returned_row)
-			row_pattern = re.compile('^[a-z]+[0-9]+[*][*][0-9]+$')
+			row_pattern = re.compile('^[a-z]+[0-9]+[*]+[0-9]+$')
 			self.assertTrue(row_pattern.match(all_cells_string))
 
 		def test_return_table_row_length(self):
