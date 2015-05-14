@@ -33,6 +33,7 @@ class UserData(object):
 				start += 1
 			except IndexError:
 				return count
+		return count
 
 	def completed_assignments(self):
 		return (

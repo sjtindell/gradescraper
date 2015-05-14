@@ -13,27 +13,6 @@ def see_more():
 	else:
 		sys.exit(0)
 
-class BadArgument(Exception):
-	pass
-
-
-def user_grades():
-	#print 'args:', sys.argv
-	#print 'calling grades funcs...'
-	#print 'should be user:', sys.argv[2]
-	try:
-		data = UserData(sys.argv[2])
-		#print data
-		interface.display_user_summary(data)
-		see_more()
-		interface.display_user_scores(data)
-		see_more()
-		interface.display_user_points_until(data)
-		see_more()
-		interface.display_remaining_points(data)
-	except TypeError:
-		print 'Invalid lotr name.'
-
 
 if sys.argv[1] == 'schedule':
 	#print 'args:', sys.argv
@@ -41,5 +20,40 @@ if sys.argv[1] == 'schedule':
 	#url = 'http://simms-teach.com/cis90calendar.php'
 	#calendar = scraper.calendar_page(url)
 	interface.display_schedule()
+
 elif sys.argv[1] == 'grades':
-	user_grades()
+	
+	try:
+		user = sys.argv[2]
+	except IndexError:
+		print 'usage: grades <lotr name>'
+		sys.exit(1)
+
+	data = UserData(sys.argv[2])
+	
+	#print 'args:', sys.argv
+	#print 'calling grades funcs...'
+	#print 'should be user:', sys.argv[2]
+
+	funcs = [
+		interface.display_user_summary,
+		interface.display_user_scores,
+		interface.display_user_points_until,
+		interface.display_remaining_points
+	]
+
+			
+	for iteration, func in enumerate(funcs):
+		try:
+			func(data)
+		except TypeError:
+			print 'invalid lotr name'
+			sys.exit(1)
+		except Exception as e:
+			print 'exception:', e
+			print 'usage: grades <lotr name>'
+			print '-' * 10
+			sys.exit(1)
+		else:
+			if iteration != 3:
+				see_more()

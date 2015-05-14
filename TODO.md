@@ -9,6 +9,7 @@ Code
 - add possible points w/ ec
 - remove point_values file and just scrape from site
 - improve cli: handle bad args, give more help
+- remove tests that test static html, add more function tests
 
 Implementation
 - make the calling scripts adaptable to system vars

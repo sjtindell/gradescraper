@@ -86,7 +86,7 @@ class GradesPage(object):
 			try:
 				with open(file_name, 'r') as f:
 					line = f.readline()
-					pts = int(line)
+					pts = int(line[0:2])
 					forum_scores.append(pts)
 			except IOError:
 				continue
