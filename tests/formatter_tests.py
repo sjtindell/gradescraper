@@ -2,9 +2,9 @@ import unittest
 import requests
 from bs4 import BeautifulSoup
 
-from scraper import GradesPage
-from point_values import point_values
-from formatter import UserData
+from lib.scraper import GradesPage
+from lib.point_values import point_values
+from lib.formatter import UserData
 
 class UserDataAPITest(unittest.TestCase):
 	
@@ -21,10 +21,14 @@ class UserDataAPITest(unittest.TestCase):
 		self.assertEqual(expected_forum_string[15][0], expected_char)
 		
 	def test_check_columns_returns_None_for_first_rows(self):
-		columns = self.data.check_columns(0, 2)
-		self.assertEqual(columns, None)
+		# early in semester, check some columns are empty
+		# we start at column 3 because names and the word grade
+		# take the first two
+		columns = self.data.check_columns(2, 4)
+		self.assertEqual(columns, 0)
 
 	def test_check_columns_returns_some_for_more_assigns(self):
+		# later in semester, check some columns are found
 		columns = self.data.check_columns(0, 15)
 		self.assertTrue(columns > 0)
 

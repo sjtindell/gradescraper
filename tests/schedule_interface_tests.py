@@ -3,9 +3,9 @@ import sys
 import time
 import unittest
 
-from src.interface import display_schedule
-from src.point_values import point_values
-from src.scraper import CalendarPage
+from lib.interface import display_schedule
+from lib.point_values import point_values
+from lib.scraper import CalendarPage
 
 
 
@@ -111,6 +111,7 @@ class RemainingWeeksInterfaceTest(unittest.TestCase):
 				previous_date = date
 	
 	def test_assignment_names_in_output(self):
+		# often fails, fragile test
 		display_schedule()
 		output = sys.stdout.getvalue().strip()	
 		for assignment_name in point_values.keys():

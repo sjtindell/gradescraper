@@ -1,0 +1,4 @@
+#! /bin/bash
+
+python /home/sam/code/py/gradescraper/lib/command_line.py grades $1
+

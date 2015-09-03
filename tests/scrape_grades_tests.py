@@ -4,7 +4,7 @@ import unittest
 import requests
 from bs4 import BeautifulSoup
 
-from src.scraper import GradesPage
+from lib.scraper import GradesPage
 
 
 class ScrapeGradesPageRangesTest(unittest.TestCase):
@@ -122,7 +122,8 @@ class GradesPageUsersTableTest(unittest.TestCase):
 		cells = self.header_row_cells(row)
 		self.assertEqual(int(cells[-1]), 560)
 
-	def test_table_user_row_format(self):	
+	def test_table_user_row_format(self):
+		# fails early in semester when there is nothing in the table	
 		row = self.table[1].find_all('tr')[3]
 		cells = self.header_row_cells(row)
 		cells = [str(cell).strip('</td>') for cell in cells]

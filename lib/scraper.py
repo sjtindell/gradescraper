@@ -118,7 +118,9 @@ class GradesPage(object):
 		table = self.soup.find_all('table', attrs={'class': 'grades'})[1]
 		for row in table.find_all('tr'):
 			cells = row.find_all('td')
-			cells = [str(cell).strip('</td>') for cell in cells]
+			# stripping </td> alone often causes a bug where we strip the letter t from usernames
+            # so we use the replace method instead
+			cells = [str(cell).replace('<td>', '').replace('</td>', '') for cell in cells]
 			cells = [0 if cell == '\xc2\xa0' else cell for cell in cells]
 			student_rows.append(cells)
 		return student_rows

@@ -1,5 +1,4 @@
-tips
 *.pyc
 __pycache__
 env
-home
+virtualenv

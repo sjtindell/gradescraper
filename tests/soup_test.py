@@ -1,7 +1,7 @@
 import urllib2
 from bs4 import BeautifulSoup
 
-html = """
+html = '''
 <html>
 <head>
 </head>
@@ -10,8 +10,7 @@ html = """
 <div id="2">numbertwo</div>
 </body>
 </html>
-"""
-
+'''
 print BeautifulSoup(html, 'html.parser').find('div', {"id":"1"})
 
 

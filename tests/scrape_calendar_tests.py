@@ -5,7 +5,7 @@ import unittest
 from bs4 import BeautifulSoup
 import requests
 
-from src.scraper import CalendarPage
+from lib.scraper import CalendarPage
 
 
 class CalendarPageTest(unittest.TestCase):

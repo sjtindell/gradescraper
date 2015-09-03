@@ -1,3 +1,4 @@
+import traceback
 import sys
 
 import interface
@@ -37,21 +38,24 @@ elif sys.argv[1] == 'grades':
 
 	funcs = [
 		interface.display_user_summary,
-		interface.display_user_scores,
-		interface.display_user_points_until,
-		interface.display_remaining_points
+		#interface.display_user_scores,
+		#interface.display_user_points_until,
+		#interface.display_remaining_points
 	]
 
 			
 	for iteration, func in enumerate(funcs):
 		try:
 			func(data)
-		except TypeError:
-			print 'invalid lotr name'
-			sys.exit(1)
+		#except TypeError:
+		#	print 'possibly invalid lotr name'
+		#	sys.exit(1)
 		except Exception as e:
 			print 'exception:', e
-			print 'usage: grades <lotr name>'
+			print 'Traceback:'
+			ex_type, ex, tb = sys.exc_info()
+			traceback.print_tb(tb)
+			del(tb)
 			print '-' * 10
 			sys.exit(1)
 		else:

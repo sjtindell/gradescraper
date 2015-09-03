@@ -31,7 +31,11 @@ def display_schedule(one_week=False):
 def display_user_summary(data):
 	user_total = sum(int(num) for num 
 		in data.user_row[2:] if num != '*')
-	grade = round(float(user_total) / float(data.possible_points), 2) * 100
+	# throws float division error if scores are both 0.0
+	if float(user_total) == 0.0 and float(data.possible_points) == 0.0:
+		grade = 100
+	else:
+		grade = round(float(user_total) / float(data.possible_points), 2) * 100
 	
 	print 'name:', data.name
 	print 'have:', user_total, 'points'

@@ -1,0 +1,4 @@
+#! /bin/bash
+
+python ../lib/command_line.py schedule
+
