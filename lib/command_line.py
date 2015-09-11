@@ -29,6 +29,11 @@ elif sys.argv[1] == 'grades':
 	except IndexError:
 		print 'usage: grades <lotr name>'
 		sys.exit(1)
+	finally:
+                if len(sys.argv) > 3:
+                        print 'possibly too many arguments.'
+                        print 'usage: grades <lotr name>'
+                        sys.exit(1)
 
 	data = UserData(sys.argv[2])
 	
@@ -38,18 +43,19 @@ elif sys.argv[1] == 'grades':
 
 	funcs = [
 		interface.display_user_summary,
-		#interface.display_user_scores,
-		#interface.display_user_points_until,
-		#interface.display_remaining_points
+		interface.display_user_scores,
+		interface.display_user_points_until,
+		interface.display_remaining_points
 	]
 
 			
 	for iteration, func in enumerate(funcs):
 		try:
 			func(data)
-		#except TypeError:
-		#	print 'possibly invalid lotr name'
-		#	sys.exit(1)
+		except TypeError:
+			print 'possibly invalid lotr name'
+                        print 'usage: grades <lotr name>'
+			sys.exit(1)
 		except Exception as e:
 			print 'exception:', e
 			print 'Traceback:'

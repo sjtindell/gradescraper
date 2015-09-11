@@ -17,6 +17,10 @@ def display_schedule(one_week=False):
 			print 'due in', diff, 'days:', date
 			
 			for name, value in point_values.items():
+                                if not row['due'] and not row['activity']:
+                                        print 'nothing due this day'
+                                        break
+
 				for assignment in row['due']:
 					if name in assignment:
 						print assignment, 'worth', value, 'points'
@@ -87,6 +91,9 @@ def display_remaining_points(data):
 			print 'due in', diff, 'days:', date
 			
 			for name, value in point_values.items():
+                                if not row['due'] and not row['activity']:
+                                        print 'nothing due this day'
+                                        break
 				for assignment in row['due']:
 					if name in assignment:
 						print assignment, 'worth', value, 'points'
