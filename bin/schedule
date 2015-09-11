@@ -1,4 +1,4 @@
 #! /bin/bash
 
-python ../lib/command_line.py schedule
+python /home/cis90/tbd14/bin/gradescraper/lib/command_line.py schedule
 

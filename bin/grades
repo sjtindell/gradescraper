@@ -1,4 +1,4 @@
-#! /bin/bash
+#!/bin/bash
 
-python /home/sam/code/py/gradescraper/lib/command_line.py grades $1
+python /home/cis90/tbd14/bin/gradescraper/lib/command_line.py grades "$@"
 

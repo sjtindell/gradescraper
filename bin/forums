@@ -1,3 +1,3 @@
 #! /bin/bash
 
-python ../lib/forums.py
+python /home/cis90/tbd14/bin/gradescraper/lib/forums.py

@@ -1,3 +1,3 @@
 #! /bin/bash
 
-python ../lib/tips.py
+python /home/cis90/tbd14/bin/gradescraper/lib/tips.py

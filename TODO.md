@@ -1,7 +1,7 @@
 General
 - add docstrings/docs
 - add license
-- setup.py?
+- setup.py? or some install script
 
 Code
 - clean up calendar page
@@ -9,10 +9,10 @@ Code
 - add possible points w/ ec
 - remove point_values file and just scrape from site
 - improve cli: handle bad args, give more help
+- interface.disp_rem_points is a copy/paste of display_sched
 
 Implementation
 - make the bash scripts in /bin adaptable to install location
-- instead of scripts, symlinks somehow?
 
 Tests
 - more of them. always.
